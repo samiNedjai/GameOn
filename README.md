@@ -1,7 +1,7 @@
 # Projet GameOn
 Openclassrooms Projet 4 : Créez une landing page avec Javascript - Site GameOn
 
-![GameOn Image] (./starterOnly/gameon.png)
+![GameOnImage] (./starterOnly/gameon.png)
 
 Le context du projet : 
 
