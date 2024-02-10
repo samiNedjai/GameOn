@@ -12,18 +12,34 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const form = document.querySelector("form[name='reserve']");
+const closeBtn = document.querySelector(".close");
+
+// Pour désactiver le défilement
+function disableScroll() {
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+}
+
+// Pour réactiver le défilement
+function enableScroll() {
+  document.body.style.overflow = "";
+  document.documentElement.style.overflow = "";
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// Close modal function (à utiliser si nécessaire)
+// Close modal function
 function closeModal() {
   modalbg.style.display = "none";
+  enableScroll(); // Réactive le défilement
 }
 
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  closeBtn.addEventListener("click", closeModal);
+  disableScroll(); // Désactive le défilement
 }
 
 // Validate form on submit
@@ -205,25 +221,19 @@ function clearError(input, isCheckboxOrRadio = false) {
 function showModalThankYou() {
   // Nettoyer le contenu du modal pour afficher le message de remerciement
   modalbg.innerHTML = `
-    
-      <div class='content'>
+    <div class='bground-2'">
+      <div class='content '>
           <span class='close' id='closeModal'></span>
-          <div class='modal-body'>
-              <h2>Merci pour votre inscription!</h2>
+          <div class='modal-body popupConfirm'>
+              <h2 class= 'texe-confirm'>Merci pour votre inscription!</h2>
               <button class='btn-submit ' id='closeThanks'>Fermer</button>
           </div>
-      </div>`;
+      </div>
+    </div>`;
 
   // Sélectionner les nouveaux éléments pour fermer le modal
   const closeModalButton = document.getElementById("closeThanks");
   const closeModalCross = document.getElementById("closeModal");
-
-  // const closeBtn = document.getElementById('closebtn'); // Capture le bouton de fermeture
-  // closeBtn.addEventListener("click", closeModal);
-
-  // Ajouter l'événement onclick pour fermer le modal avec le bouton
   closeModalButton.addEventListener("click", closeModal);
-
-  // Ajouter l'événement onclick pour fermer le modal avec la croix (✕)
   closeModalCross.addEventListener("click", closeModal);
 }
