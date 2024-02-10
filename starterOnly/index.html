@@ -2,9 +2,9 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>Reservation</title>
+    
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="modal.css" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link
       href="https://fonts.googleapis.com/css?family=DM+Sans"
@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<meta name="description"
+content="GameOn Landing Page - Video Game conference and competition">
+<title>GameON</title>
+<link rel="stylesheet" href="modal.css" />
   </head>
   <body>
     <div class="topnav" id="myTopnav">
@@ -21,11 +25,11 @@
         </div>
         <div class="main-navbar">
           <div class="nav_menu">
-            <a href="#" class="active"><span>Accueil</span></a>
-            <a href="#"><span>Détails de l'évènement</span></a>
-            <a href="#"><span>À propos</span></a>
-            <a href="#"><span>Contact</span></a>
-            <a href="#"><span>Évènements passés</span></a>
+            <!-- <a href="#" class="active"><span>Accueil</span></a> -->
+            <a href="#" id="nav_details"><span>Détails de l'évènement</span></a>
+            <a href="#" id="nav_about"><span>À propos</span></a>
+            <a href="#" id="nav_contact"><span>Contact</span></a>
+            <a href="#" id="nav_evenementpasse"><span>Évènements passés</span></a>
           </div>
           <a href="javascript:void(0);" class="icon" onclick="editNav()">
           
@@ -59,7 +63,7 @@
 
       <div class="bground">
         <div class="content">
-          <span class="close"></span>
+          <span class="close" id="closebtn"></span>
           <div class="modal-body">
             <form
               name="reserve"
