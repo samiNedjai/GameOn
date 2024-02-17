@@ -154,8 +154,10 @@ function validateBirthdate() {
 //  Validate nombre de tournois
 function validateTournaments() {
   const tournaments = document.getElementById("quantity");
-  if (!tournaments.value || isNaN(tournaments.value) || tournaments.value < 0) {
-    displayError(tournaments, "Veuillez entrer un nombre valide de tournois.");
+  const inputValue = tournaments.value.trim(); // Supprimer les espaces vides au début et à la fin
+  // Vérifier si l'entrée contient uniquement des chiffres et n'a pas la lettre "e"
+  if (!/^\d+$/.test(inputValue) || inputValue.includes('e') || parseInt(inputValue) < 0 || parseInt(inputValue) > 99) {
+    displayError(tournaments, "Veuillez entrer un nombre valide de tournois (entre 0 et 99).");
     return false;
   } else {
     clearError(tournaments);
