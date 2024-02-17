@@ -14,6 +14,9 @@ const formData = document.querySelectorAll(".formData");
 const form = document.querySelector("form[name='reserve']");
 const closeBtn = document.querySelector(".close");
 
+// Sauvegarde du contenu initial du modal pour une réutilisation ultérieure
+const originalModalContent = modalbg.innerHTML;
+
 // Pour désactiver le défilement
 function disableScroll() {
   document.body.style.overflow = "hidden";
@@ -39,6 +42,13 @@ function launchModal() {
   modalbg.style.display = "block";
   closeBtn.addEventListener("click", closeModal);
   disableScroll(); // Désactive le défilement
+}
+
+// Fonction pour fermer le modal et réinitialiser au formulaire
+function closeAndResetModal() {
+  modalbg.innerHTML = originalModalContent; // Réinitialise au contenu original
+  closeModal(); // Ferme le modal
+  reattachEventListeners(); // Réattache les écouteurs d'événements
 }
 
 // Validate form on submit
@@ -271,8 +281,49 @@ function showModalThankYou() {
     </div>`;
 
   // Sélectionner les nouveaux éléments pour fermer le modal
-  const closeModalButton = document.getElementById("closeThanks");
-  const closeModalCross = document.getElementById("closeModal");
-  closeModalButton.addEventListener("click", closeModal);
-  closeModalCross.addEventListener("click", closeModal);
+  document
+    .getElementById("closeThanks")
+    .addEventListener("click", closeAndResetModal);
+  document
+    .getElementById("closeModal")
+    .addEventListener("click", closeAndResetModal);
+}
+
+function reattachEventListeners() {
+  // Réattacher les écouteurs d'événements pour l'ouverture du modal
+  modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+  // Réattacher les écouteurs d'événements pour la fermeture du modal
+  document.querySelector(".close").addEventListener("click", closeModal);
+
+  // Réattacher l'écouteur d'événements pour la soumission du formulaire
+  document
+    .querySelector("form[name='reserve']")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (validateForm()) {
+        showModalThankYou();
+      }
+    });
+
+  // Réattacher les écouteurs d'événements pour la validation en temps réel des champs du formulaire
+  document.getElementById("first").addEventListener("input", validateFirstName);
+  document.getElementById("last").addEventListener("input", validateLastName);
+  document.getElementById("email").addEventListener("input", validateEmail);
+  document
+    .getElementById("birthdate")
+    .addEventListener("input", validateBirthdate);
+  document
+    .getElementById("quantity")
+    .addEventListener("input", validateTournaments);
+
+  // Réattacher les écouteurs pour les sélections de ville
+  const locationRadios = document.querySelectorAll('input[name="location"]');
+  locationRadios.forEach((radio) => {
+    radio.addEventListener("change", validateCitySelection);
+  });
+  // Réattacher l'écouteur pour les conditions d'utilisation
+  document
+    .getElementById("checkbox1")
+    .addEventListener("change", validateTerms);
 }
