@@ -1,3 +1,4 @@
+// Fonction pour gérer le menu de navigation responsive
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -7,41 +8,41 @@ function editNav() {
   }
 }
 
-// DOM Elements
+// Sélection des éléments du DOM nécessaires pour le modal
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const form = document.querySelector("form[name='reserve']");
 const closeBtn = document.querySelector(".close");
 
-// Sauvegarde du contenu initial du modal pour une réutilisation ultérieure
+// Sauvegarde du contenu initial du modal pour une réutilisation
 const originalModalContent = modalbg.innerHTML;
 
-// Pour désactiver le défilement
+// Fonctions pour activer ou désactiver le défilement de la page
+// Desactiver
 function disableScroll() {
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
 }
-
-// Pour réactiver le défilement
+//  réactiver
 function enableScroll() {
   document.body.style.overflow = "";
   document.documentElement.style.overflow = "";
 }
 
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
-// Close modal function
-function closeModal() {
-  modalbg.style.display = "none"; // Cache le modal
-  enableScroll(); // Réactive le défilement
-}
-// launch modal form
+// Fonction pour ouvrir le modal
 function launchModal() {
   modalbg.style.display = "block";
   closeBtn.addEventListener("click", closeModal);
   disableScroll(); // Désactive le défilement
+}
+// launch modal event
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+// Fonction pour fermer le modal sans réinitialisation
+function closeModal() {
+  modalbg.style.display = "none"; // Cache le modal
+  enableScroll(); // Réactive le défilement
 }
 
 // Fonction pour fermer le modal et réinitialiser au formulaire
@@ -78,11 +79,14 @@ locationRadios.forEach((radio) => {
 });
 
 document.getElementById("checkbox1").addEventListener("change", validateTerms);
+// Fonctions de validation pour chaque champ du formulaire
 
+// Regex pour valider que la chaîne contient uniquement des lettres et au moins deux lettres
+const regex = /^[a-zA-Z]{2,}$/;
 // Validate first name
 function validateFirstName() {
   const firstName = document.getElementById("first");
-  if (firstName.value.length < 2 || /\d/.test(firstName.value)) {
+  if (!regex.test(firstName.value)) {
     displayError(
       firstName,
       "Prénom doit contenir au moins 2 caractères et pas de chiffres."
@@ -97,7 +101,7 @@ function validateFirstName() {
 // Validate last name
 function validateLastName() {
   const lastName = document.getElementById("last");
-  if (lastName.value.length < 2 || /\d/.test(lastName.value)) {
+  if (!regex.test(lastName.value)) {
     displayError(
       lastName,
       "Nom doit contenir au moins 2 caractères et pas de chiffres."
@@ -112,7 +116,9 @@ function validateLastName() {
 // Validate email
 function validateEmail() {
   const email = document.getElementById("email");
-  if (!/\S+@\S+\.\S+/.test(email.value)) {
+  // Regex plus stricte pour la validation de l'email
+  const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if(!regexEmail.test(email.value)) {
     displayError(email, "Doit être une adresse email valide.");
     return false;
   } else {
