@@ -63,13 +63,13 @@ content="GameOn Landing Page - Video Game conference and competition">
 
       <div class="bground">
         <div class="content">
-          <span class="close"></span>
+          <span class="close" ></span>
           <div class="modal-body">
             <form
               name="reserve"
               action="index.html"
               method="get"
-              onsubmit="return validate();"
+              onsubmit="event.preventDefault(); validateForm();"
             >
               <div
                 class="formData">
@@ -118,7 +118,8 @@ content="GameOn Landing Page - Video Game conference and competition">
                 <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
               </div>
               <p class="text-label" id="ville">A quel tournoi souhaitez-vous participer cette année ?</p>
-              <div
+              <p id="locationError" class="error-message"></p>
+              <div id="city-selection"
                 class="formData">
                 <input
                   class="checkbox-input"
@@ -186,10 +187,11 @@ content="GameOn Landing Page - Video Game conference and competition">
                   <span class="checkbox-icon"></span>
                   Portland</label
                 >
+                
               </div>
 
               <div
-                class="formData">
+                class="formData" id="terms-container">
                 <input
                   class="checkbox-input"
                   type="checkbox"

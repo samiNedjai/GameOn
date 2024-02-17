@@ -31,10 +31,9 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // Close modal function
 function closeModal() {
-  modalbg.style.display = "none";
+  modalbg.style.display = "none"; // Cache le modal
   enableScroll(); // Réactive le défilement
 }
-
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
@@ -152,13 +151,14 @@ function validateCitySelection() {
   const locations = document.querySelectorAll('input[name="location"]:checked');
   if (locations.length === 0) {
     displayError(
-      document.querySelector(".text-label"),
+      null,
       "Vous devez sélectionner une ville.",
-      true
+      true,
+      "#city-selection"
     );
     return false;
   } else {
-    clearError(document.querySelector(".text-label"), true);
+    clearError(null, false, "#city-selection");
     return true;
   }
 }
@@ -167,36 +167,62 @@ function validateTerms() {
   const termsAccepted = document.getElementById("checkbox1").checked;
   if (!termsAccepted) {
     displayError(
-      document.getElementById("checkbox1"),
+      null,
       "Vous devez accepter les conditions d'utilisation.",
-      true
+      true,
+      "#terms-container"
     );
+
     return false;
   } else {
-    clearError(document.getElementById("checkbox1"), true);
+    clearError(null, false, "#terms-container");
     return true;
   }
 }
 
 // Validate form (including other validations)
 function validateForm() {
-  // Utilisez un opérateur logique AND pour combiner les validations
-  const isFormValid =
-    validateFirstName() &&
-    validateLastName() &&
-    validateEmail() &&
-    validateBirthdate() &&
-    validateTournaments() &&
-    validateCitySelection() &&
-    validateTerms();
-  return isFormValid;
-}
+  // Appelle chaque fonction de validation et stocke leur résultat
+  const isValidFirstName = validateFirstName();
+  const isValidLastName = validateLastName();
+  const isValidEmail = validateEmail();
+  const isValidBirthdate = validateBirthdate();
+  const isValidTournaments = validateTournaments();
+  const isValidCitySelection = validateCitySelection();
+  const isValidTerms = validateTerms();
 
+  // Vérifie si tous les champs sont valides
+  const isFormValid =
+    isValidFirstName &&
+    isValidLastName &&
+    isValidEmail &&
+    isValidBirthdate &&
+    isValidTournaments &&
+    isValidCitySelection &&
+    isValidTerms;
+
+  // Afficher le modal de remerciement si le formulaire est valide, sinon afficher les erreurs
+  if (isFormValid) {
+    showModalThankYou();
+    // closeModal(); // Ferme le modal après l'affichage du message de remerciement
+  }
+}
 // Afficher les messages d'erreur
-function displayError(input, message, isCheckboxOrRadio = false) {
-  const parent = isCheckboxOrRadio
-    ? input.parentNode.parentNode
-    : input.parentElement; // Parent correct pour les checkboxes/radios
+function displayError(
+  input,
+  message,
+  isCheckboxOrRadio = false,
+  customErrorContainer = null
+) {
+  let parent;
+  if (customErrorContainer) {
+    parent = document.querySelector(customErrorContainer);
+  } else {
+    parent = isCheckboxOrRadio
+      ? input.parentNode.parentNode
+      : input.parentElement;
+  }
+
   let error = parent.querySelector(".error-message");
   if (!error) {
     error = document.createElement("div");
@@ -207,13 +233,26 @@ function displayError(input, message, isCheckboxOrRadio = false) {
 }
 
 // Effacer les messages d'erreur
-function clearError(input, isCheckboxOrRadio = false) {
-  const parent = isCheckboxOrRadio
-    ? input.parentNode.parentNode
-    : input.parentElement; // Parent correct pour les checkboxes/radios
-  const error = parent.querySelector(".error-message");
-  if (error) {
-    parent.removeChild(error);
+function clearError(
+  input,
+  isCheckboxOrRadio = false,
+  customErrorContainer = null
+) {
+  let parent;
+  if (customErrorContainer) {
+    parent = document.querySelector(customErrorContainer);
+  } else if (input) {
+    // Assurez-vous que input n'est pas null avant d'accéder à parentElement
+    parent = isCheckboxOrRadio
+      ? input.parentNode.parentNode
+      : input.parentElement;
+  }
+
+  if (parent) {
+    const error = parent.querySelector(".error-message");
+    if (error) {
+      parent.removeChild(error);
+    }
   }
 }
 
